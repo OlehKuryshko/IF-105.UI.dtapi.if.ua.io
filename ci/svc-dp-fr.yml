@@ -44,3 +44,24 @@ spec:
       containers:
       - name: dtester-frontend
         image: registry.gitlab.com/oleh_kuryshko/if-105-ui-dtapi-if-ua-io:IMAGE_TAG
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-autoscaling-frontend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v2beta1v1
+    kind: Deployment
+    name: dtester-frontend
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 80
